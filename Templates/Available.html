@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Available Gadgets - Smart Rental Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0a0f1f;
+        }
+        .navbar {
+            background: linear-gradient(90deg, #004e92, #000428);
+            box-shadow: 0 5px 20px rgba(0, 78, 146, 0.4);
+            padding: 15px 0;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 2rem;
+            color: #ffffff !important;
+            letter-spacing: 1px;
+        }
+        .hero {
+            background: url('/static/images/digital-circle-circuit-blue-background-futuristic-technology.jpg') no-repeat center center/cover;
+            color: #ffffff; text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.8);
+            padding: 150px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            text-shadow: 2px 4px 20px rgba(0, 0, 0, 0.8);
+            letter-spacing: 2px;
+        }
+        .hero p {
+            font-size: 1.8rem;
+            text-shadow: 1px 2px 10px rgba(0, 0, 0, 0.8);
+        }
+        .gadget-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 15px;
+            overflow: hidden;
+            background-color: #1a1f2f; color: #ffffff;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+        .gadget-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        .gadget-card img {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .btn-rent {
+            background-color: #009688;
+            border-color: #009688;
+            color: #fff;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn-rent:hover {
+            background-color: #00796b;
+            border-color: #00796b;
+            transform: scale(1.05);
+        }
+        .container h1 {
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">Smart Rental Management</a>
+  </div>
+</nav>
+
+<div class="hero">
+    <h1>Welcome to Smart Rental Management</h1>
+    <p>Find the best gadgets for rent at unbeatable prices.</p>
+</div>
+
+<div class="container">
+    <h1 class="text-center">Available Gadgets</h1>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% if available_gadgets %}
+        {% for gadget in available_gadgets %}
+        <div class="col">
+            <div class="card gadget-card">
+                <img src="/static/images/{{ gadget[1] | replace(' ', '_') | lower }}.jpg" alt="{{ gadget[1] }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ gadget[1] }}</h5>
+                    <p class="card-text">{{ gadget[2][:100] }}{% if gadget[2] | length > 100 %}...{% endif %}</p>
+                    <p><strong>Price Per Day (PKR):</strong> {{ gadget[3] }}</p>
+                    <a href="/rent/{{ gadget[0] }}" class="btn btn-rent w-100">Rent Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="alert alert-info w-100 text-center shadow" role="alert">
+            No gadgets available for rent at the moment. Please check back later.
+        </div>
+        {% endif %}
+    </div>
+<h1 class="text-center">Rented Gadgets</h1>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% if rented_gadgets %}
+        {% for gadget in rented_gadgets %}
+        <div class="col">
+            <div class="card gadget-card">
+                <img src="/static/images/{{ gadget[1] | replace(' ', '_') | lower }}.jpg" alt="{{ gadget[1] }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ gadget[1] }}</h5>
+                    <p class="card-text">{{ gadget[2][:100] }}{% if gadget[2] | length > 100 %}...{% endif %}</p>
+                    <p><strong>Price Per Day (PKR):</strong> {{ gadget[3] }}</p>
+                    <a href="/confirm_return/{{ gadget[0] }}" class="btn btn-warning w-100">Return Gadget</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="alert alert-info w-100 text-center shadow" role="alert">
+            No gadgets are currently rented.
+        </div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
